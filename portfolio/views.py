@@ -63,6 +63,11 @@ class ProjectListView(generics.ListAPIView):
     queryset = Project.objects.all().order_by('-created_at')
     serializer_class = ProjectSerializer
 
+# --- PROJECT CREATE API ---
+class ProjectCreateView(generics.CreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
 # --- FRONTEND VIEW FOR PROJECTS PAGE ---
 def projects_page(request):
     return render(request, 'projects.html')
