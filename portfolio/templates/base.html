@@ -18,6 +18,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .mobile-menu.active {
+            max-height: 500px;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white">
@@ -28,10 +36,29 @@
                 <a href="{% url 'index' %}" class="text-2xl font-bold tracking-tighter">
                     DOM<span class="text-indigo-500">.</span>DEV
                 </a>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="{% url 'index' %}" class="hover:text-indigo-400 transition-colors text-sm font-medium">Home</a>
                     <a href="{% url 'projects' %}" class="hover:text-indigo-400 transition-colors text-sm font-medium">Works</a>
                     <a href="{% url 'index' %}#contact" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-sm font-bold transition-all transform hover:scale-105">Let's Talk</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden">
+                <div class="px-2 pt-2 pb-6 space-y-3">
+                    <a href="{% url 'index' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium">Home</a>
+                    <a href="{% url 'projects' %}" class="block px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium">Works</a>
+                    <a href="{% url 'index' %}#contact" class="block px-4 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white text-sm font-bold text-center transition-all">Let's Talk</a>
                 </div>
             </div>
         </div>
@@ -41,9 +68,33 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-t border-gray-800 mt-20 py-10 text-center text-gray-500 text-sm">
+    <footer class="border-t border-gray-800 mt-20 py-10 text-center text-gray-500 text-sm px-4">
         <p>&copy; 2024 Dominic Quainoo. Built with Django & Tailwind.</p>
     </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>
