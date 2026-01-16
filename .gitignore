@@ -26,7 +26,7 @@ wheels/
 local_settings.py
 # db.sqlite3 - Allow committing database with projects
 db.sqlite3-journal
-/media
+# /media - Allow media files for deployed projects
 /staticfiles
 
 # Environment
